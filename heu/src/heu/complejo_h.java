@@ -11,6 +11,9 @@ public class complejo_h {
     ArrayList<ambulancias> ambulancias_h = new ArrayList();
     ArrayList<paramedicos> paramedicos_h = new ArrayList();
 
+    public complejo_h() {
+    }
+    
     public complejo_h(String nombre, String direccion, int capacidad_p, int capacidad_a, char ranking) {
         this.nombre = nombre;
         this.direccion = direccion;

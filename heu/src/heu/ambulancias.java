@@ -6,6 +6,9 @@ public class ambulancias {
     String placa;
     int año,max_km;
 
+    public ambulancias() {
+    }
+    
     public ambulancias(String placa, int año, int max_km) {
         this.placa = placa;
         this.año = año;

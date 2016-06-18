@@ -7,6 +7,9 @@ public class paramedicos {
     int edad;
     char ranking;
 
+    public paramedicos() {
+    }
+    
     public paramedicos(String nombre, String ID, int edad, char ranking) {
         this.nombre = nombre;
         this.ID = ID;
