@@ -5,6 +5,14 @@
  */
 package heu;
 
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author felix
@@ -16,8 +24,26 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        
+        String s = "";
+
+        s = "org.jb2011.lnf.beautyeye.BeautyEyeLookAndFeelCross";
+
+        try {
+            javax.swing.UIManager.setLookAndFeel(s);
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    ArrayList<complejo_h> complejos = new ArrayList();
+    ArrayList<paramedicos> paramedico = new ArrayList();
+    ArrayList<ambulancias> ambulancia = new ArrayList();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,75 +57,247 @@ public class Main extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nombre_complejo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        c_paramedicos = new javax.swing.JSpinner();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        direccion_complejo = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        c_ambulancias = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
+        emergencias_complejo = new javax.swing.JComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabla_complejos = new javax.swing.JTable();
+        eliminar_c = new javax.swing.JButton();
+        agregar_c = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        nombre_p = new javax.swing.JTextField();
+        id_p = new javax.swing.JTextField();
+        edad_p = new javax.swing.JSpinner();
+        agregar_p = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tabla_p = new javax.swing.JTable();
+        eliminar_p = new javax.swing.JButton();
+        transferir_p = new javax.swing.JButton();
+        ranking_p = new javax.swing.JComboBox();
+        jLabel10 = new javax.swing.JLabel();
+        complejo_p = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        placa_a = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        year_a = new javax.swing.JSpinner();
+        jLabel13 = new javax.swing.JLabel();
+        velocidad_a = new javax.swing.JSpinner();
+        jLabel14 = new javax.swing.JLabel();
+        complejo_a = new javax.swing.JComboBox();
+        jLabel15 = new javax.swing.JLabel();
+        agregar_a = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tabla_a = new javax.swing.JTable();
+        eliminar_a = new javax.swing.JButton();
+        transferir_a = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nombre");
+        jPanel1.setBorder(new org.edisoncor.gui.util.DropShadowBorder());
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jLabel1)
-                .addGap(26, 26, 26)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(452, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(410, Short.MAX_VALUE))
-        );
+        jLabel1.setText("Nombre");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 37, -1, -1));
+        jPanel1.add(nombre_complejo, new org.netbeans.lib.awtextra.AbsoluteConstraints(103, 34, 166, -1));
+
+        jLabel2.setText("Direccion");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 86, -1, -1));
+
+        jLabel3.setText("Capacidad de Paramedicos");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 221, -1, -1));
+
+        c_paramedicos.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jPanel1.add(c_paramedicos, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 218, 61, -1));
+
+        direccion_complejo.setColumns(20);
+        direccion_complejo.setRows(5);
+        jScrollPane1.setViewportView(direccion_complejo);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(103, 86, -1, -1));
+
+        jLabel4.setText("Capacidad de Ambulancias ");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 273, -1, -1));
+
+        c_ambulancias.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jPanel1.add(c_ambulancias, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 254, 61, -1));
+
+        jLabel5.setText("Ranking de Emergencias");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 321, -1, -1));
+
+        emergencias_complejo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D" }));
+        jPanel1.add(emergencias_complejo, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 318, 61, -1));
+
+        tabla_complejos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "C.Paramedico", "C.Ambulancias", "Ranking"
+            }
+        ));
+        jScrollPane2.setViewportView(tabla_complejos);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 438, 195));
+
+        eliminar_c.setText("Eliminar");
+        eliminar_c.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eliminar_cMouseClicked(evt);
+            }
+        });
+        jPanel1.add(eliminar_c, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 220, -1, -1));
+
+        agregar_c.setText("Agregar");
+        agregar_c.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregar_cMouseClicked(evt);
+            }
+        });
+        jPanel1.add(agregar_c, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, -1, -1));
 
         jTabbedPane1.addTab("Complejo", jPanel1);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
-        );
+        jPanel2.setBorder(new org.edisoncor.gui.util.DropShadowBorder());
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setText("Nombre");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 45, -1, -1));
+
+        jLabel7.setText("Edad");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 83, -1, -1));
+
+        jLabel8.setText("ID");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 121, -1, -1));
+
+        jLabel9.setText("Ranking");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 159, -1, -1));
+        jPanel2.add(nombre_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 42, 140, -1));
+        jPanel2.add(id_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 118, 140, -1));
+
+        edad_p.setModel(new javax.swing.SpinnerNumberModel(18, 18, 75, 1));
+        jPanel2.add(edad_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 80, 56, -1));
+
+        agregar_p.setText("Agregar");
+        agregar_p.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregar_pMouseClicked(evt);
+            }
+        });
+        jPanel2.add(agregar_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 328, -1, -1));
+
+        tabla_p.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Edad", "Ranking", "Complejo"
+            }
+        ));
+        jScrollPane3.setViewportView(tabla_p);
+
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(332, 28, -1, 148));
+
+        eliminar_p.setText("Eliminar");
+        eliminar_p.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eliminar_pMouseClicked(evt);
+            }
+        });
+        jPanel2.add(eliminar_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(707, 213, 77, -1));
+
+        transferir_p.setText("Transferir");
+        transferir_p.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                transferir_pMouseClicked(evt);
+            }
+        });
+        jPanel2.add(transferir_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 213, -1, -1));
+
+        ranking_p.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D" }));
+        jPanel2.add(ranking_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 156, 56, -1));
+
+        jLabel10.setText("Complejo Hospitalario");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 204, -1, -1));
+
+        jPanel2.add(complejo_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 244, 141, -1));
 
         jTabbedPane1.addTab("Paramedicos", jPanel2);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
-        );
+        jPanel3.setBorder(new org.edisoncor.gui.util.DropShadowBorder());
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setText("Numero de Placa");
+        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 46, -1, -1));
+        jPanel3.add(placa_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 141, -1));
+
+        jLabel12.setText("Año del vehiculo");
+        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 93, -1, -1));
+
+        year_a.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1990), Integer.valueOf(1990), null, Integer.valueOf(1)));
+        jPanel3.add(year_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, -1, -1));
+
+        jLabel13.setText("Velocidad Maxima");
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 152, -1, -1));
+
+        velocidad_a.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(70), Integer.valueOf(40), null, Integer.valueOf(1)));
+        jPanel3.add(velocidad_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, 63, -1));
+
+        jLabel14.setText("Kmph");
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(227, 152, -1, -1));
+
+        jPanel3.add(complejo_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 235, 143, -1));
+
+        jLabel15.setText("Complejo Hospitalario");
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 198, -1, -1));
+
+        agregar_a.setText("Agregar");
+        agregar_a.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregar_aMouseClicked(evt);
+            }
+        });
+        jPanel3.add(agregar_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 337, -1, -1));
+
+        tabla_a.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Numero de Placa", "Año del Vehiculo", "Velocidad Maxima", "Complejo Hospitalario"
+            }
+        ));
+        jScrollPane4.setViewportView(tabla_a);
+
+        jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, -1, 143));
+
+        eliminar_a.setText("Eliminar");
+        eliminar_a.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eliminar_aMouseClicked(evt);
+            }
+        });
+        jPanel3.add(eliminar_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 194, -1, -1));
+
+        transferir_a.setText("Transferir");
+        jPanel3.add(transferir_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 194, -1, -1));
 
         jTabbedPane1.addTab("Ambulancias", jPanel3);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
-        );
-
+        jPanel4.setBorder(new org.edisoncor.gui.util.DropShadowBorder());
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jTabbedPane1.addTab("Mapa", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -121,6 +319,130 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void agregar_cMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_cMouseClicked
+        if (!nombre_complejo.getText().equals("") && !direccion_complejo.getText().equals("")) {
+            String nombre = nombre_complejo.getText(), direccion = direccion_complejo.getText();
+            int capacidad_p = Integer.parseInt(c_paramedicos.getValue().toString()), capacidad_a = Integer.parseInt(c_ambulancias.getValue().toString());
+            char ranking = emergencias_complejo.getSelectedItem().toString().charAt(0);
+
+            complejos.add(new complejo_h(nombre, direccion, capacidad_p, capacidad_a, ranking));
+            complejo_p.addItem(nombre);
+            complejo_a.addItem(nombre);
+            DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
+            String[] row = {nombre, Integer.toString(capacidad_p), Integer.toString(capacidad_a), Character.toString(ranking)};
+            m.addRow(row);
+
+            nombre_complejo.setText("");
+            direccion_complejo.setText("");
+            c_paramedicos.setValue(0);
+            c_ambulancias.setValue(0);
+            emergencias_complejo.setSelectedIndex(0);
+            JOptionPane.showMessageDialog(this, "Se ha agregado un complejo hospitalario exitosamente");
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR! Hay campos vacios!");
+        }
+    }//GEN-LAST:event_agregar_cMouseClicked
+
+    private void eliminar_cMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminar_cMouseClicked
+        if (tabla_complejos.getSelectedRow() >= 0) {
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este complejo?");
+            if (opcion == 0) {
+                DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
+                complejos.remove(tabla_complejos.getSelectedRow());
+                complejo_p.removeItemAt(tabla_complejos.getSelectedRow());
+                complejo_a.removeItemAt(tabla_complejos.getSelectedRow());
+                m.removeRow(tabla_complejos.getSelectedRow());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
+        }
+    }//GEN-LAST:event_eliminar_cMouseClicked
+
+    private void agregar_pMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_pMouseClicked
+        if (!nombre_p.getText().equals("") && !id_p.getText().equals("")) {
+            if (complejos.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ERROR! No has asignado un complejo hospitalario");
+            } else {
+                String nombre = nombre_p.getText(), ID = id_p.getText();
+                int edad = Integer.parseInt(edad_p.getValue().toString());
+                char ranking = ranking_p.getSelectedItem().toString().charAt(0);
+                String complejo = complejo_p.getSelectedItem().toString();
+                paramedico.add(new paramedicos(nombre, ID, edad, ranking, complejo));
+
+                DefaultTableModel m = (DefaultTableModel) tabla_p.getModel();
+                String[] row = {nombre, Integer.toString(edad), Character.toString(ranking), complejo};
+                m.addRow(row);
+
+                nombre_p.setText("");
+                id_p.setText("");
+                edad_p.setValue(0);
+                ranking_p.setSelectedIndex(0);
+                complejo_p.setSelectedIndex(0);
+                JOptionPane.showMessageDialog(this, "Se ha agregado un paramedico exitosamente");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR! Hay campos vacios!");
+        }
+    }//GEN-LAST:event_agregar_pMouseClicked
+
+    private void eliminar_pMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminar_pMouseClicked
+        if (tabla_p.getSelectedRow() >= 0) {
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este paramedico?");
+            if (opcion == 0) {
+                DefaultTableModel m = (DefaultTableModel) tabla_p.getModel();
+                paramedico.remove(tabla_p.getSelectedRow());
+                m.removeRow(tabla_p.getSelectedRow());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
+        }
+    }//GEN-LAST:event_eliminar_pMouseClicked
+
+    private void eliminar_aMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminar_aMouseClicked
+        if (tabla_a.getSelectedRow() >= 0) {
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este paramedico?");
+            if (opcion == 0) {
+                DefaultTableModel m = (DefaultTableModel) tabla_a.getModel();
+                ambulancia.remove(tabla_a.getSelectedRow());
+                m.removeRow(tabla_a.getSelectedRow());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
+        }
+    }//GEN-LAST:event_eliminar_aMouseClicked
+
+    private void agregar_aMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_aMouseClicked
+       if (!placa_a.getText().equals("")) {
+            if (complejos.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ERROR! No has asignado un complejo hospitalario");
+            } else {
+                String placa = placa_a.getText();
+                int año= Integer.parseInt(year_a.getValue().toString()),max_km = Integer.parseInt(velocidad_a.getValue().toString());
+                
+                String complejo = complejo_a.getSelectedItem().toString();
+                
+                ambulancia.add(new ambulancias(placa, complejo ,año, max_km));
+
+                DefaultTableModel m = (DefaultTableModel) tabla_a.getModel();
+                String[] row = {placa,  Integer.toString(año), Integer.toString(max_km),complejo};
+                m.addRow(row);
+
+                placa_a.setText("");
+                
+                year_a.setValue(1990);
+                velocidad_a.setValue(70);
+                complejo_p.setSelectedIndex(0);
+                JOptionPane.showMessageDialog(this, "Se ha agregado una ambulancia exitosamente");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR! Hay campos vacios!");
+        }
+    }//GEN-LAST:event_agregar_aMouseClicked
+
+    private void transferir_pMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transferir_pMouseClicked
+        
+    }//GEN-LAST:event_transferir_pMouseClicked
 
     /**
      * @param args the command line arguments
@@ -133,7 +455,7 @@ public class Main extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -158,12 +480,54 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregar_a;
+    private javax.swing.JButton agregar_c;
+    private javax.swing.JButton agregar_p;
+    private javax.swing.JSpinner c_ambulancias;
+    private javax.swing.JSpinner c_paramedicos;
+    private javax.swing.JComboBox complejo_a;
+    private javax.swing.JComboBox complejo_p;
+    private javax.swing.JTextArea direccion_complejo;
+    private javax.swing.JSpinner edad_p;
+    private javax.swing.JButton eliminar_a;
+    private javax.swing.JButton eliminar_c;
+    private javax.swing.JButton eliminar_p;
+    private javax.swing.JComboBox emergencias_complejo;
+    private javax.swing.JTextField id_p;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField nombre_complejo;
+    private javax.swing.JTextField nombre_p;
+    private javax.swing.JTextField placa_a;
+    private javax.swing.JComboBox ranking_p;
+    private javax.swing.JTable tabla_a;
+    private javax.swing.JTable tabla_complejos;
+    private javax.swing.JTable tabla_p;
+    private javax.swing.JButton transferir_a;
+    private javax.swing.JButton transferir_p;
+    private javax.swing.JSpinner velocidad_a;
+    private javax.swing.JSpinner year_a;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,15 +1,11 @@
 
 package heu;
 
-import java.util.ArrayList;
-
 
 public class complejo_h {
     String nombre,direccion;
     int capacidad_p,capacidad_a;
     char ranking; 
-    ArrayList<ambulancias> ambulancias_h = new ArrayList();
-    ArrayList<paramedicos> paramedicos_h = new ArrayList();
 
     public complejo_h() {
     }
@@ -62,21 +58,7 @@ public class complejo_h {
         this.ranking = ranking;
     }
 
-    public ArrayList<ambulancias> getAmbulancias_h() {
-        return ambulancias_h;
-    }
-
-    public void setAmbulancias_h(ArrayList<ambulancias> ambulancias_h) {
-        this.ambulancias_h = ambulancias_h;
-    }
-
-    public ArrayList<paramedicos> getParamedicos_h() {
-        return paramedicos_h;
-    }
-
-    public void setParamedicos_h(ArrayList<paramedicos> paramedicos_h) {
-        this.paramedicos_h = paramedicos_h;
-    }
+    
     
     
 }

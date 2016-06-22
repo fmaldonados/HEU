@@ -6,16 +6,19 @@ public class paramedicos {
     String nombre,ID;
     int edad;
     char ranking;
-
+    String complejo;
     public paramedicos() {
     }
-    
-    public paramedicos(String nombre, String ID, int edad, char ranking) {
+
+    public paramedicos(String nombre, String ID, int edad, char ranking, String complejo) {
         this.nombre = nombre;
         this.ID = ID;
         this.edad = edad;
         this.ranking = ranking;
+        this.complejo = complejo;
     }
+    
+    
 
     public String getNombre() {
         return nombre;

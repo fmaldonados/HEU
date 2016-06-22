@@ -3,17 +3,20 @@ package heu;
 
 
 public class ambulancias {
-    String placa;
+    String placa,complejo;
     int año,max_km;
-
+    
     public ambulancias() {
     }
-    
-    public ambulancias(String placa, int año, int max_km) {
+
+    public ambulancias(String placa, String complejo, int año, int max_km) {
         this.placa = placa;
+        this.complejo = complejo;
         this.año = año;
         this.max_km = max_km;
     }
+    
+    
 
     public String getPlaca() {
         return placa;
