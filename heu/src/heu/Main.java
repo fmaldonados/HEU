@@ -639,9 +639,9 @@ public class Main extends javax.swing.JFrame {
             if (opcion == 0) {
                 DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
                 DefaultTableModel n = (DefaultTableModel) elegir_c.getModel();
-                
+
                 int r = tabla_complejos.getSelectedRow();
-                
+
                 for (int i = 0; i < ambulancia.size(); i++) {
                     if (ambulancia.get(i).complejo.equals(complejos.get(r).nombre)) {
                         ambulancia.get(i).setComplejo("Sin Complejo");
@@ -673,22 +673,28 @@ public class Main extends javax.swing.JFrame {
             if (complejos.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "ERROR! No has asignado un complejo hospitalario");
             } else {
+
                 String nombre = nombre_p.getText(), ID = id_p.getText();
                 int edad = Integer.parseInt(edad_p.getValue().toString());
                 char ranking = ranking_p.getSelectedItem().toString().charAt(0);
                 String complejo = complejo_p.getSelectedItem().toString();
-                paramedico.add(new paramedicos(nombre, ID, edad, ranking, complejo));
+                if (!lleno_a(complejo, complejos.get(complejo_p.getSelectedIndex()).capacidad_p)) {
+                    paramedico.add(new paramedicos(nombre, ID, edad, ranking, complejo));
 
-                DefaultTableModel m = (DefaultTableModel) tabla_p.getModel();
-                String[] row = {nombre, Integer.toString(edad), Character.toString(ranking), complejo};
-                m.addRow(row);
+                    DefaultTableModel m = (DefaultTableModel) tabla_p.getModel();
+                    String[] row = {nombre, Integer.toString(edad), Character.toString(ranking), complejo};
+                    m.addRow(row);
 
-                nombre_p.setText("");
-                id_p.setText("");
-                edad_p.setValue(18);
-                ranking_p.setSelectedIndex(0);
-                complejo_p.setSelectedIndex(0);
-                JOptionPane.showMessageDialog(this, "Se ha agregado un paramedico exitosamente");
+                    nombre_p.setText("");
+                    id_p.setText("");
+                    edad_p.setValue(18);
+                    ranking_p.setSelectedIndex(0);
+                    complejo_p.setSelectedIndex(0);
+                    JOptionPane.showMessageDialog(this, "Se ha agregado un paramedico exitosamente");
+                } else {
+                    JOptionPane.showMessageDialog(this, "El complejo ya esta lleno");
+                }
+
             }
         } else {
             JOptionPane.showMessageDialog(this, "ERROR! Hay campos vacios!");
@@ -730,19 +736,23 @@ public class Main extends javax.swing.JFrame {
                 int año = Integer.parseInt(year_a.getValue().toString()), max_km = Integer.parseInt(velocidad_a.getValue().toString());
 
                 String complejo = complejo_a.getSelectedItem().toString();
+                if (!lleno_a(complejo, complejos.get(complejo_a.getSelectedIndex()).capacidad_a)) {
+                    ambulancia.add(new ambulancias(placa, complejo, año, max_km));
 
-                ambulancia.add(new ambulancias(placa, complejo, año, max_km));
+                    DefaultTableModel m = (DefaultTableModel) tabla_a.getModel();
+                    String[] row = {placa, Integer.toString(año), Integer.toString(max_km), complejo};
+                    m.addRow(row);
 
-                DefaultTableModel m = (DefaultTableModel) tabla_a.getModel();
-                String[] row = {placa, Integer.toString(año), Integer.toString(max_km), complejo};
-                m.addRow(row);
+                    placa_a.setText("");
 
-                placa_a.setText("");
+                    year_a.setValue(1990);
+                    velocidad_a.setValue(70);
+                    complejo_p.setSelectedIndex(0);
+                    JOptionPane.showMessageDialog(this, "Se ha agregado una ambulancia exitosamente");
+                } else {
+                    JOptionPane.showMessageDialog(this, "El complejo ya esta lleno");
+                }
 
-                year_a.setValue(1990);
-                velocidad_a.setValue(70);
-                complejo_p.setSelectedIndex(0);
-                JOptionPane.showMessageDialog(this, "Se ha agregado una ambulancia exitosamente");
             }
         } else {
             JOptionPane.showMessageDialog(this, "ERROR! Hay campos vacios!");
@@ -917,7 +927,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        if(domicilios.size() >0){
+        if (domicilios.size() > 0) {
             ArrayList<complejo_h> c_cumplen = new ArrayList();
             ArrayList valores = new ArrayList();
             for (int i = 0; i < complejos.size(); i++) {
@@ -925,12 +935,12 @@ public class Main extends javax.swing.JFrame {
                     c_cumplen.add(complejos.get(i));
                 }
             }
-            
-            if (c_cumplen.size()>0) {
-                
+
+            if (c_cumplen.size() > 0) {
+
                 for (int i = 0; i < c_cumplen.size(); i++) {
-                    int cont_p=0;
-                    int cont_a=0;
+                    int cont_p = 0;
+                    int cont_a = 0;
                     for (int j = 0; j < paramedico.size(); j++) {
                         if (c_cumplen.get(i).nombre.equals(paramedico.get(j).complejo)) {
                             cont_p++;
@@ -941,42 +951,47 @@ public class Main extends javax.swing.JFrame {
                             cont_a++;
                         }
                     }
-                    if (cont_p !=3 && cont_a !=1) {
+                    if (cont_p != 3 && cont_a != 1) {
                         c_cumplen.remove(i);
                     }
                 }
-                Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE,null,"ui.label");
-                dijkstra.init(grafo);
-                dijkstra.setSource(grafo.getNode(domicilios_emergencia.getSelectedItem().toString()));
-                dijkstra.compute();
-                for (int i = 0; i < c_cumplen.size(); i++) {
-                    Path camino = dijkstra.getPath(grafo.getNode(c_cumplen.get(i).nombre));
-                    double longitud_c = camino.getPathWeight("ui.label");
-                    valores.add(longitud_c);
-                }
-                double minimo = 999999999999999.0;
-                int complejo_optimo=0;
-                for (int i = 0; i < valores.size(); i++) {
-                    if ((double)valores.get(i)< minimo) {
-                        minimo = (double)valores.get(i);
-                        complejo_optimo = i;
+                if (c_cumplen.size() > 0) {
+                    Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, "ui.label");
+                    dijkstra.init(grafo);
+                    dijkstra.setSource(grafo.getNode(domicilios_emergencia.getSelectedItem().toString()));
+                    dijkstra.compute();
+                    for (int i = 0; i < c_cumplen.size(); i++) {
+                        Path camino = dijkstra.getPath(grafo.getNode(c_cumplen.get(i).nombre));
+                        double longitud_c = camino.getPathWeight("ui.label");
+                        valores.add(longitud_c);
                     }
-                }
-                ambulancias temp = new ambulancias();
-                for (int i = 0; i < ambulancia.size(); i++) {
-                    if (complejos.get(complejo_optimo).nombre.equals(ambulancia.get(i).complejo)) {
-                        temp = ambulancia.get(i);
+                    double minimo = 999999999999999.0;
+                    int complejo_optimo = 0;
+                    for (int i = 0; i < valores.size(); i++) {
+                        if ((double) valores.get(i) < minimo) {
+                            minimo = (double) valores.get(i);
+                            complejo_optimo = i;
+                        }
                     }
+                    ambulancias temp = new ambulancias();
+                    for (int i = 0; i < ambulancia.size(); i++) {
+                        if (complejos.get(complejo_optimo).nombre.equals(ambulancia.get(i).complejo)) {
+                            temp = ambulancia.get(i);
+                        }
+                    }
+                    double time = (minimo / (double) temp.max_km) * 2.0;
+                    Hilo h = new Hilo(time, domicilios_emergencia.getSelectedItem().toString(), true);
+                    h.run();
+                    JOptionPane.showMessageDialog(this, "La ambulancia tardo " + time + "hrs" + " en regresar");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ninguno de los complejos puede atender la emergencia");
                 }
-                double time = (minimo / (double)temp.max_km)*2.0;
-                Hilo h = new Hilo(time,domicilios_emergencia.getSelectedItem().toString(),true);
-                h.run();
-                JOptionPane.showMessageDialog(this, "La ambulancia tardo " + time +"hrs"+ " en regresar");
-            }else{
-            JOptionPane.showMessageDialog(this, "No hay complejos que cumplan los requisitos");
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay complejos que cumplan los requisitos");
             }
-        
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(this, "No hay domicilio seleccionado");
         }
     }//GEN-LAST:event_jButton3MouseClicked
