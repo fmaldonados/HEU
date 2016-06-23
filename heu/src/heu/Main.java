@@ -18,7 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
@@ -81,6 +83,10 @@ public class Main extends javax.swing.JFrame {
         elegir_c = new javax.swing.JTable();
         bt_cambiar = new javax.swing.JButton();
         mostrar_grafo = new javax.swing.JDialog();
+        administrar_emergencia = new javax.swing.JDialog();
+        ranking_emergencia = new javax.swing.JComboBox();
+        domicilios_emergencia = new javax.swing.JComboBox();
+        jButton3 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -145,6 +151,7 @@ public class Main extends javax.swing.JFrame {
         distancia_arista = new javax.swing.JSpinner();
         domicilio_arista = new javax.swing.JComboBox();
         agregar_arista = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         elegir_c.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -199,6 +206,43 @@ public class Main extends javax.swing.JFrame {
         mostrar_grafoLayout.setVerticalGroup(
             mostrar_grafoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 564, Short.MAX_VALUE)
+        );
+
+        ranking_emergencia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D" }));
+
+        jButton3.setText("Aceptar");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout administrar_emergenciaLayout = new javax.swing.GroupLayout(administrar_emergencia.getContentPane());
+        administrar_emergencia.getContentPane().setLayout(administrar_emergenciaLayout);
+        administrar_emergenciaLayout.setHorizontalGroup(
+            administrar_emergenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(administrar_emergenciaLayout.createSequentialGroup()
+                .addGroup(administrar_emergenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(administrar_emergenciaLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(ranking_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(domicilios_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(administrar_emergenciaLayout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jButton3)))
+                .addContainerGap(77, Short.MAX_VALUE))
+        );
+        administrar_emergenciaLayout.setVerticalGroup(
+            administrar_emergenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(administrar_emergenciaLayout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addGroup(administrar_emergenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ranking_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(domicilios_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
+                .addComponent(jButton3)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -468,6 +512,14 @@ public class Main extends javax.swing.JFrame {
         });
         jPanel4.add(agregar_arista, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 230, -1, -1));
 
+        jButton2.setText("Emergencias");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 360, -1, -1));
+
         jTabbedPane1.addTab("Mapa", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -524,9 +576,9 @@ public class Main extends javax.swing.JFrame {
                 complejos = guardados.getComplejos();
                 paramedico = guardados.getParamedico();
                 ambulancia = guardados.getAmbulancia();
-                
 
                 DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
+                DefaultTableModel z = (DefaultTableModel) elegir_c.getModel();
                 DefaultTableModel n = (DefaultTableModel) tabla_p.getModel();
                 DefaultTableModel c = (DefaultTableModel) tabla_a.getModel();
                 for (int i = 0; i < complejos.size(); i++) {
@@ -536,6 +588,7 @@ public class Main extends javax.swing.JFrame {
                     mapear_c.addItem(complejos.get(i).nombre);
                     complejos_arista.addItem(complejos.get(i).nombre);
                     m.addRow(row);
+                    z.addRow(row);
                 }
                 for (int i = 0; i < paramedico.size(); i++) {
                     Object[] row = {paramedico.get(i).nombre, paramedico.get(i).edad, paramedico.get(i).ranking, paramedico.get(i).complejo};
@@ -545,7 +598,6 @@ public class Main extends javax.swing.JFrame {
                     Object[] row = {ambulancia.get(i).placa, ambulancia.get(i).año, ambulancia.get(i).max_km, ambulancia.get(i).complejo};
                     c.addRow(row);
                 }
-                
 
             } catch (Exception ex) {
 
@@ -567,8 +619,9 @@ public class Main extends javax.swing.JFrame {
             DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
             DefaultTableModel n = (DefaultTableModel) elegir_c.getModel();
             String[] row = {nombre, Integer.toString(capacidad_p), Integer.toString(capacidad_a), Character.toString(ranking)};
+            String[] row2 = {nombre, Integer.toString(capacidad_p), Integer.toString(capacidad_a), Character.toString(ranking)};
             m.addRow(row);
-            n.addRow(row);
+            n.addRow(row2);
             nombre_complejo.setText("");
             direccion_complejo.setText("");
             c_paramedicos.setValue(1);
@@ -585,12 +638,30 @@ public class Main extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este complejo?");
             if (opcion == 0) {
                 DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
+                DefaultTableModel n = (DefaultTableModel) elegir_c.getModel();
+                
+                int r = tabla_complejos.getSelectedRow();
+                
+                for (int i = 0; i < ambulancia.size(); i++) {
+                    if (ambulancia.get(i).complejo.equals(complejos.get(r).nombre)) {
+                        ambulancia.get(i).setComplejo("Sin Complejo");
+                    }
+                }
+                for (int i = 0; i < paramedico.size(); i++) {
+                    if (paramedico.get(i).complejo.equals(complejos.get(r).nombre)) {
+                        paramedico.get(i).setComplejo("Sin Complejo");
+                    }
+                }
                 complejos.remove(tabla_complejos.getSelectedRow());
                 complejo_p.removeItemAt(tabla_complejos.getSelectedRow());
                 complejo_a.removeItemAt(tabla_complejos.getSelectedRow());
                 complejos_arista.removeItemAt(tabla_complejos.getSelectedRow());
                 mapear_c.removeItemAt(tabla_complejos.getSelectedRow());
-                m.removeRow(tabla_complejos.getSelectedRow());
+                actualizar_ambulancia();
+                actualizar_paramedico();
+                n.removeRow(r);
+                m.removeRow(r);
+
             }
         } else {
             JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
@@ -703,19 +774,67 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
         }
     }//GEN-LAST:event_transferir_aMouseClicked
+    public void actualizar_paramedico() {
+        DefaultTableModel m = (DefaultTableModel) tabla_p.getModel();
+        for (int i = 0; i < paramedico.size(); i++) {
+            m.removeRow(0);
+        }
 
+        for (int i = 0; i < paramedico.size(); i++) {
+            Object[] row = {paramedico.get(i).nombre, paramedico.get(i).edad, paramedico.get(i).ranking, paramedico.get(i).complejo};
+            m.addRow(row);
+
+        }
+        tabla_p.setModel(m);
+    }
+
+    public void actualizar_ambulancia() {
+        DefaultTableModel m = (DefaultTableModel) tabla_a.getModel();
+        for (int i = 0; i < ambulancia.size(); i++) {
+            m.removeRow(0);
+        }
+        for (int i = 0; i < ambulancia.size(); i++) {
+            Object[] row = {ambulancia.get(i).placa, ambulancia.get(i).año, ambulancia.get(i).max_km, ambulancia.get(i).complejo};
+            m.addRow(row);
+
+        }
+        tabla_a.setModel(m);
+    }
     private void bt_cambiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_cambiarMouseClicked
         if (elegir_c.getSelectedRow() >= 0) {
             if (bandera == 0) {
                 if (!lleno_p(complejos.get(elegir_c.getSelectedRow()).nombre, complejos.get(elegir_c.getSelectedRow()).capacidad_p)) {
+                    paramedico.get(tabla_p.getSelectedRow()).setComplejo(complejos.get(elegir_c.getSelectedRow()).nombre);
+                    DefaultTableModel m = (DefaultTableModel) tabla_p.getModel();
+                    for (int i = 0; i < paramedico.size(); i++) {
+                        m.removeRow(0);
+                    }
 
+                    for (int i = 0; i < paramedico.size(); i++) {
+                        Object[] row = {paramedico.get(i).nombre, paramedico.get(i).edad, paramedico.get(i).ranking, paramedico.get(i).complejo};
+                        m.addRow(row);
+
+                    }
+                    tabla_p.setModel(m);
+                    elegir_complejo.setVisible(false);
                     JOptionPane.showMessageDialog(this, "Transferencia realizada con exito!");
                 } else {
                     JOptionPane.showMessageDialog(this, "Este complejo ya esta lleno de paramedicos!");
                 }
             } else {
                 if (!lleno_a(complejos.get(elegir_c.getSelectedRow()).nombre, complejos.get(elegir_c.getSelectedRow()).capacidad_a)) {
+                    ambulancia.get(tabla_a.getSelectedRow()).setComplejo(complejos.get(elegir_c.getSelectedRow()).nombre);
+                    DefaultTableModel m = (DefaultTableModel) tabla_a.getModel();
+                    for (int i = 0; i < ambulancia.size(); i++) {
+                        m.removeRow(0);
+                    }
+                    for (int i = 0; i < ambulancia.size(); i++) {
+                        Object[] row = {ambulancia.get(i).placa, ambulancia.get(i).año, ambulancia.get(i).max_km, ambulancia.get(i).complejo};
+                        m.addRow(row);
 
+                    }
+                    tabla_a.setModel(m);
+                    elegir_complejo.setVisible(false);
                     JOptionPane.showMessageDialog(this, "Transferencia realizada con exito!");
                 } else {
                     JOptionPane.showMessageDialog(this, "Este complejo ya esta lleno de ambulancias!");
@@ -751,6 +870,7 @@ public class Main extends javax.swing.JFrame {
         if (!nombre_d.getText().equals("") && !direccion_d.getText().equals("")) {
             domicilios.add(new domicilio(nombre_d.getText(), direccion_d.getText()));
             domicilio_arista.addItem(nombre_d.getText());
+            domicilios_emergencia.addItem(nombre_d.getText());
             grafo.addNode(nombre_d.getText());
             nombre_d.setText("");
             direccion_d.setText("");
@@ -770,14 +890,15 @@ public class Main extends javax.swing.JFrame {
         if (complejos.size() > 0) {
             if (domicilios.size() > 0) {
                 try {
-                    grafo.addEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre+"-"+domicilios.get(domicilio_arista.getSelectedIndex()).nombre , complejos.get(complejos_arista.getSelectedIndex()).nombre, domicilios.get(domicilio_arista.getSelectedIndex()).nombre);
-                    grafo.getEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre+"-"+domicilios.get(domicilio_arista.getSelectedIndex()).nombre).setAttribute("peso", distancia_arista.getValue());
-                    System.out.println(grafo.getEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre+"-"+domicilios.get(domicilio_arista.getSelectedIndex()).nombre).getAttribute("peso").toString());
+                    double distancia = Double.parseDouble(distancia_arista.getValue().toString());
+                    grafo.addEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre + "-" + domicilios.get(domicilio_arista.getSelectedIndex()).nombre, complejos.get(complejos_arista.getSelectedIndex()).nombre, domicilios.get(domicilio_arista.getSelectedIndex()).nombre);
+                    grafo.getEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre + "-" + domicilios.get(domicilio_arista.getSelectedIndex()).nombre).setAttribute("ui.label", distancia);
+                    System.out.println(grafo.getEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre + "-" + domicilios.get(domicilio_arista.getSelectedIndex()).nombre).getAttribute("ui.label").toString());
                     complejos_arista.setSelectedIndex(0);
                     domicilio_arista.setSelectedIndex(0);
                     distancia_arista.setValue(1);
                     JOptionPane.showMessageDialog(this, "Ruta creada exitosamente");
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "ERROR! Algo ocurrio intentalo de nuevo!");
                 }
             } else {
@@ -787,6 +908,78 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No hay complejos seleccionados");
         }
     }//GEN-LAST:event_agregar_aristaMouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        this.administrar_emergencia.pack();
+        administrar_emergencia.setLocationRelativeTo(this);
+        administrar_emergencia.setModal(true);
+        administrar_emergencia.setVisible(true);
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        if(domicilios.size() >0){
+            ArrayList<complejo_h> c_cumplen = new ArrayList();
+            ArrayList valores = new ArrayList();
+            for (int i = 0; i < complejos.size(); i++) {
+                if (complejos.get(i).ranking == ranking_emergencia.getSelectedItem().toString().charAt(0)) {
+                    c_cumplen.add(complejos.get(i));
+                }
+            }
+            
+            if (c_cumplen.size()>0) {
+                
+                for (int i = 0; i < c_cumplen.size(); i++) {
+                    int cont_p=0;
+                    int cont_a=0;
+                    for (int j = 0; j < paramedico.size(); j++) {
+                        if (c_cumplen.get(i).nombre.equals(paramedico.get(j).complejo)) {
+                            cont_p++;
+                        }
+                    }
+                    for (int j = 0; j < ambulancia.size(); j++) {
+                        if (c_cumplen.get(i).nombre.equals(ambulancia.get(j).complejo)) {
+                            cont_a++;
+                        }
+                    }
+                    if (cont_p !=3 && cont_a !=1) {
+                        c_cumplen.remove(i);
+                    }
+                }
+                Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE,null,"ui.label");
+                dijkstra.init(grafo);
+                dijkstra.setSource(grafo.getNode(domicilios_emergencia.getSelectedItem().toString()));
+                dijkstra.compute();
+                for (int i = 0; i < c_cumplen.size(); i++) {
+                    Path camino = dijkstra.getPath(grafo.getNode(c_cumplen.get(i).nombre));
+                    double longitud_c = camino.getPathWeight("ui.label");
+                    valores.add(longitud_c);
+                }
+                double minimo = 999999999999999.0;
+                int complejo_optimo=0;
+                for (int i = 0; i < valores.size(); i++) {
+                    if ((double)valores.get(i)< minimo) {
+                        minimo = (double)valores.get(i);
+                        complejo_optimo = i;
+                    }
+                }
+                ambulancias temp = new ambulancias();
+                for (int i = 0; i < ambulancia.size(); i++) {
+                    if (complejos.get(complejo_optimo).nombre.equals(ambulancia.get(i).complejo)) {
+                        temp = ambulancia.get(i);
+                    }
+                }
+                double time = (minimo / (double)temp.max_km)*2.0;
+                Hilo h = new Hilo(time,domicilios_emergencia.getSelectedItem().toString(),true);
+                h.run();
+                JOptionPane.showMessageDialog(this, "La ambulancia tardo " + time +"hrs"+ " en regresar");
+            }else{
+            JOptionPane.showMessageDialog(this, "No hay complejos que cumplan los requisitos");
+            }
+        
+        }else{
+            JOptionPane.showMessageDialog(this, "No hay domicilio seleccionado");
+        }
+    }//GEN-LAST:event_jButton3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -849,6 +1042,7 @@ public class Main extends javax.swing.JFrame {
         return false;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog administrar_emergencia;
     private javax.swing.JButton agregar_a;
     private javax.swing.JButton agregar_arista;
     private javax.swing.JButton agregar_c;
@@ -865,6 +1059,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextArea direccion_d;
     private javax.swing.JSpinner distancia_arista;
     private javax.swing.JComboBox domicilio_arista;
+    private javax.swing.JComboBox domicilios_emergencia;
     private javax.swing.JSpinner edad_p;
     private javax.swing.JTable elegir_c;
     private javax.swing.JDialog elegir_complejo;
@@ -874,6 +1069,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JComboBox emergencias_complejo;
     private javax.swing.JTextField id_p;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -910,6 +1107,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField nombre_d;
     private javax.swing.JTextField nombre_p;
     private javax.swing.JTextField placa_a;
+    private javax.swing.JComboBox ranking_emergencia;
     private javax.swing.JComboBox ranking_p;
     private javax.swing.JTable tabla_a;
     private javax.swing.JTable tabla_complejos;

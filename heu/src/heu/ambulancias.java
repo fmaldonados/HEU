@@ -17,6 +17,14 @@ public class ambulancias implements Serializable{
         this.año = año;
         this.max_km = max_km;
     }
+
+    public String getComplejo() {
+        return complejo;
+    }
+
+    public void setComplejo(String complejo) {
+        this.complejo = complejo;
+    }
     
     
 

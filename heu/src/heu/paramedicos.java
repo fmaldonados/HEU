@@ -4,7 +4,7 @@ package heu;
 import java.io.Serializable;
 
 
-public class paramedicos implements Serializable {
+public class paramedicos implements Serializable, Comparable<paramedicos> {
     String nombre,ID;
     int edad;
     char ranking;
@@ -17,6 +17,14 @@ public class paramedicos implements Serializable {
         this.ID = ID;
         this.edad = edad;
         this.ranking = ranking;
+        this.complejo = complejo;
+    }
+
+    public String getComplejo() {
+        return complejo;
+    }
+
+    public void setComplejo(String complejo) {
         this.complejo = complejo;
     }
     
@@ -52,6 +60,23 @@ public class paramedicos implements Serializable {
 
     public void setRanking(char ranking) {
         this.ranking = ranking;
+    }
+
+    @Override
+    public int compareTo(paramedicos t) {
+        char a,b;
+        a = this.getRanking();
+        b = t.getRanking();
+        
+        if (this.equals(t)) {
+            return 0;
+        }else{
+            if (a>b) {
+                return 1;
+            }else{
+                return -1;
+            }
+        }
     }
     
     
