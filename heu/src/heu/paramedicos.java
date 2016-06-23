@@ -1,8 +1,10 @@
 
 package heu;
 
+import java.io.Serializable;
 
-public class paramedicos {
+
+public class paramedicos implements Serializable {
     String nombre,ID;
     int edad;
     char ranking;

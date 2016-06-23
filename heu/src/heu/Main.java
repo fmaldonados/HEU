@@ -5,6 +5,12 @@
  */
 package heu;
 
+import java.awt.Component;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +18,10 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.View;
+import org.graphstream.ui.view.Viewer;
 
 /**
  *
@@ -24,6 +34,13 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+
+        cargar();
+
+        Viewer viewer = grafo.display(true);
+        View view = viewer.getDefaultView();
+        mostrar_grafo.add((Component) view);
+
         String s = "";
 
         s = "org.jb2011.lnf.beautyeye.BeautyEyeLookAndFeelCross";
@@ -41,9 +58,14 @@ public class Main extends javax.swing.JFrame {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    datos guardados;
+
     ArrayList<complejo_h> complejos = new ArrayList();
     ArrayList<paramedicos> paramedico = new ArrayList();
     ArrayList<ambulancias> ambulancia = new ArrayList();
+    ArrayList<domicilio> domicilios = new ArrayList();
+    Graph grafo = new SingleGraph("Mapa");
+    int bandera = 0;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,6 +76,11 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        elegir_complejo = new javax.swing.JDialog();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        elegir_c = new javax.swing.JTable();
+        bt_cambiar = new javax.swing.JButton();
+        mostrar_grafo = new javax.swing.JDialog();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -103,8 +130,83 @@ public class Main extends javax.swing.JFrame {
         eliminar_a = new javax.swing.JButton();
         transferir_a = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        mapear_c = new javax.swing.JComboBox();
+        agregar_cm = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        nombre_d = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        direccion_d = new javax.swing.JTextArea();
+        agregar_d = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        complejos_arista = new javax.swing.JComboBox();
+        distancia_arista = new javax.swing.JSpinner();
+        domicilio_arista = new javax.swing.JComboBox();
+        agregar_arista = new javax.swing.JButton();
+
+        elegir_c.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "C.Paramedico", "C.Ambulancias", "Ranking"
+            }
+        ));
+        jScrollPane5.setViewportView(elegir_c);
+
+        bt_cambiar.setText("Aceptar");
+        bt_cambiar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_cambiarMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout elegir_complejoLayout = new javax.swing.GroupLayout(elegir_complejo.getContentPane());
+        elegir_complejo.getContentPane().setLayout(elegir_complejoLayout);
+        elegir_complejoLayout.setHorizontalGroup(
+            elegir_complejoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(elegir_complejoLayout.createSequentialGroup()
+                .addGap(213, 213, 213)
+                .addComponent(bt_cambiar)
+                .addContainerGap(240, Short.MAX_VALUE))
+            .addGroup(elegir_complejoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, elegir_complejoLayout.createSequentialGroup()
+                    .addContainerGap(36, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(36, Short.MAX_VALUE)))
+        );
+        elegir_complejoLayout.setVerticalGroup(
+            elegir_complejoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, elegir_complejoLayout.createSequentialGroup()
+                .addContainerGap(389, Short.MAX_VALUE)
+                .addComponent(bt_cambiar)
+                .addGap(58, 58, 58))
+            .addGroup(elegir_complejoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, elegir_complejoLayout.createSequentialGroup()
+                    .addContainerGap(21, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(130, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout mostrar_grafoLayout = new javax.swing.GroupLayout(mostrar_grafo.getContentPane());
+        mostrar_grafo.getContentPane().setLayout(mostrar_grafoLayout);
+        mostrar_grafoLayout.setHorizontalGroup(
+            mostrar_grafoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 820, Short.MAX_VALUE)
+        );
+        mostrar_grafoLayout.setVerticalGroup(
+            mostrar_grafoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 564, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(new org.edisoncor.gui.util.DropShadowBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -150,7 +252,7 @@ public class Main extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tabla_complejos);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 438, 195));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 438, 195));
 
         eliminar_c.setText("Eliminar");
         eliminar_c.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -158,7 +260,7 @@ public class Main extends javax.swing.JFrame {
                 eliminar_cMouseClicked(evt);
             }
         });
-        jPanel1.add(eliminar_c, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 220, -1, -1));
+        jPanel1.add(eliminar_c, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 250, -1, -1));
 
         agregar_c.setText("Agregar");
         agregar_c.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -216,7 +318,7 @@ public class Main extends javax.swing.JFrame {
                 eliminar_pMouseClicked(evt);
             }
         });
-        jPanel2.add(eliminar_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(707, 213, 77, -1));
+        jPanel2.add(eliminar_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 220, 77, -1));
 
         transferir_p.setText("Transferir");
         transferir_p.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -224,7 +326,7 @@ public class Main extends javax.swing.JFrame {
                 transferir_pMouseClicked(evt);
             }
         });
-        jPanel2.add(transferir_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 213, -1, -1));
+        jPanel2.add(transferir_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 220, -1, -1));
 
         ranking_p.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D" }));
         jPanel2.add(ranking_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 156, 56, -1));
@@ -269,7 +371,7 @@ public class Main extends javax.swing.JFrame {
                 agregar_aMouseClicked(evt);
             }
         });
-        jPanel3.add(agregar_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 337, -1, -1));
+        jPanel3.add(agregar_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, -1, -1));
 
         tabla_a.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -292,12 +394,80 @@ public class Main extends javax.swing.JFrame {
         jPanel3.add(eliminar_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 194, -1, -1));
 
         transferir_a.setText("Transferir");
+        transferir_a.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                transferir_aMouseClicked(evt);
+            }
+        });
         jPanel3.add(transferir_a, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 194, -1, -1));
 
         jTabbedPane1.addTab("Ambulancias", jPanel3);
 
         jPanel4.setBorder(new org.edisoncor.gui.util.DropShadowBorder());
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel4.add(mapear_c, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 110, -1));
+
+        agregar_cm.setText("Agregar al Mapa");
+        agregar_cm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregar_cmMouseClicked(evt);
+            }
+        });
+        jPanel4.add(agregar_cm, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, -1, -1));
+
+        jButton1.setText("Ver Mapa");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 360, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel16.setText("Domicilios");
+        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
+
+        jLabel17.setText("Nombre");
+        jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
+        jPanel4.add(nombre_d, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 140, -1));
+
+        jLabel18.setText("Direccion");
+        jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+
+        direccion_d.setColumns(20);
+        direccion_d.setRows(5);
+        jScrollPane6.setViewportView(direccion_d);
+
+        jPanel4.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, 140, -1));
+
+        agregar_d.setText("Agregar");
+        agregar_d.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregar_dMouseClicked(evt);
+            }
+        });
+        jPanel4.add(agregar_d, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, -1));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel19.setText("Agregar Rutas");
+        jPanel4.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, -1, -1));
+
+        jPanel4.add(complejos_arista, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 170, 90, -1));
+
+        distancia_arista.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jPanel4.add(distancia_arista, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 170, 60, -1));
+
+        jPanel4.add(domicilio_arista, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 170, 110, -1));
+
+        agregar_arista.setText("Agregar");
+        agregar_arista.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregar_aristaMouseClicked(evt);
+            }
+        });
+        jPanel4.add(agregar_arista, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 230, -1, -1));
+
         jTabbedPane1.addTab("Mapa", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -306,20 +476,83 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 844, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+    private void guardar() {
+        guardados = new datos();
+        guardados.setAmbulancia(ambulancia);
+        guardados.setComplejos(complejos);
+        guardados.setParamedico(paramedico);
+
+        try {
+            File archivo = null;
+            try {
+                archivo = new File("./Datos.fms");
+                FileOutputStream fo = new FileOutputStream(archivo);
+                ObjectOutputStream os = new ObjectOutputStream(fo);
+                os.writeObject(guardados);
+                os.close();
+                fo.close();
+            } catch (Exception ex) {
+
+            }
+        } catch (Exception ex) {
+
+        }
+    }
+
+    private void cargar() {
+        try {
+            File archivo = null;
+            try {
+                archivo = new File("./Datos.fms");
+                FileInputStream fi = new FileInputStream(archivo);
+                ObjectInputStream oi = new ObjectInputStream(fi);
+                guardados = (datos) oi.readObject();
+
+                complejos = guardados.getComplejos();
+                paramedico = guardados.getParamedico();
+                ambulancia = guardados.getAmbulancia();
+                
+
+                DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
+                DefaultTableModel n = (DefaultTableModel) tabla_p.getModel();
+                DefaultTableModel c = (DefaultTableModel) tabla_a.getModel();
+                for (int i = 0; i < complejos.size(); i++) {
+                    Object[] row = {complejos.get(i).nombre, complejos.get(i).capacidad_p, complejos.get(i).capacidad_a, complejos.get(i).ranking};
+                    complejo_p.addItem(complejos.get(i).nombre);
+                    complejo_a.addItem(complejos.get(i).nombre);
+                    mapear_c.addItem(complejos.get(i).nombre);
+                    complejos_arista.addItem(complejos.get(i).nombre);
+                    m.addRow(row);
+                }
+                for (int i = 0; i < paramedico.size(); i++) {
+                    Object[] row = {paramedico.get(i).nombre, paramedico.get(i).edad, paramedico.get(i).ranking, paramedico.get(i).complejo};
+                    n.addRow(row);
+                }
+                for (int i = 0; i < ambulancia.size(); i++) {
+                    Object[] row = {ambulancia.get(i).placa, ambulancia.get(i).año, ambulancia.get(i).max_km, ambulancia.get(i).complejo};
+                    c.addRow(row);
+                }
+                
+
+            } catch (Exception ex) {
+
+            }
+        } catch (Exception ex) {
+        }
+    }
     private void agregar_cMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_cMouseClicked
         if (!nombre_complejo.getText().equals("") && !direccion_complejo.getText().equals("")) {
             String nombre = nombre_complejo.getText(), direccion = direccion_complejo.getText();
@@ -329,14 +562,17 @@ public class Main extends javax.swing.JFrame {
             complejos.add(new complejo_h(nombre, direccion, capacidad_p, capacidad_a, ranking));
             complejo_p.addItem(nombre);
             complejo_a.addItem(nombre);
+            mapear_c.addItem(nombre);
+            complejos_arista.addItem(nombre);
             DefaultTableModel m = (DefaultTableModel) tabla_complejos.getModel();
+            DefaultTableModel n = (DefaultTableModel) elegir_c.getModel();
             String[] row = {nombre, Integer.toString(capacidad_p), Integer.toString(capacidad_a), Character.toString(ranking)};
             m.addRow(row);
-
+            n.addRow(row);
             nombre_complejo.setText("");
             direccion_complejo.setText("");
-            c_paramedicos.setValue(0);
-            c_ambulancias.setValue(0);
+            c_paramedicos.setValue(1);
+            c_ambulancias.setValue(1);
             emergencias_complejo.setSelectedIndex(0);
             JOptionPane.showMessageDialog(this, "Se ha agregado un complejo hospitalario exitosamente");
         } else {
@@ -352,6 +588,8 @@ public class Main extends javax.swing.JFrame {
                 complejos.remove(tabla_complejos.getSelectedRow());
                 complejo_p.removeItemAt(tabla_complejos.getSelectedRow());
                 complejo_a.removeItemAt(tabla_complejos.getSelectedRow());
+                complejos_arista.removeItemAt(tabla_complejos.getSelectedRow());
+                mapear_c.removeItemAt(tabla_complejos.getSelectedRow());
                 m.removeRow(tabla_complejos.getSelectedRow());
             }
         } else {
@@ -376,7 +614,7 @@ public class Main extends javax.swing.JFrame {
 
                 nombre_p.setText("");
                 id_p.setText("");
-                edad_p.setValue(0);
+                edad_p.setValue(18);
                 ranking_p.setSelectedIndex(0);
                 complejo_p.setSelectedIndex(0);
                 JOptionPane.showMessageDialog(this, "Se ha agregado un paramedico exitosamente");
@@ -413,23 +651,23 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminar_aMouseClicked
 
     private void agregar_aMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_aMouseClicked
-       if (!placa_a.getText().equals("")) {
+        if (!placa_a.getText().equals("")) {
             if (complejos.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "ERROR! No has asignado un complejo hospitalario");
             } else {
                 String placa = placa_a.getText();
-                int año= Integer.parseInt(year_a.getValue().toString()),max_km = Integer.parseInt(velocidad_a.getValue().toString());
-                
+                int año = Integer.parseInt(year_a.getValue().toString()), max_km = Integer.parseInt(velocidad_a.getValue().toString());
+
                 String complejo = complejo_a.getSelectedItem().toString();
-                
-                ambulancia.add(new ambulancias(placa, complejo ,año, max_km));
+
+                ambulancia.add(new ambulancias(placa, complejo, año, max_km));
 
                 DefaultTableModel m = (DefaultTableModel) tabla_a.getModel();
-                String[] row = {placa,  Integer.toString(año), Integer.toString(max_km),complejo};
+                String[] row = {placa, Integer.toString(año), Integer.toString(max_km), complejo};
                 m.addRow(row);
 
                 placa_a.setText("");
-                
+
                 year_a.setValue(1990);
                 velocidad_a.setValue(70);
                 complejo_p.setSelectedIndex(0);
@@ -441,8 +679,114 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_agregar_aMouseClicked
 
     private void transferir_pMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transferir_pMouseClicked
-        
+        if (tabla_p.getSelectedRow() >= 0) {
+            bandera = 0;
+            elegir_complejo.pack();
+            elegir_complejo.setLocationRelativeTo(this);
+            elegir_complejo.setModal(true);
+            elegir_complejo.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
+        }
     }//GEN-LAST:event_transferir_pMouseClicked
+
+    private void transferir_aMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transferir_aMouseClicked
+        if (tabla_a.getSelectedRow() >= 0) {
+            bandera = 1;
+            elegir_complejo.pack();
+            elegir_complejo.setLocationRelativeTo(this);
+            elegir_complejo.setModal(true);
+            elegir_complejo.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
+        }
+    }//GEN-LAST:event_transferir_aMouseClicked
+
+    private void bt_cambiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_cambiarMouseClicked
+        if (elegir_c.getSelectedRow() >= 0) {
+            if (bandera == 0) {
+                if (!lleno_p(complejos.get(elegir_c.getSelectedRow()).nombre, complejos.get(elegir_c.getSelectedRow()).capacidad_p)) {
+
+                    JOptionPane.showMessageDialog(this, "Transferencia realizada con exito!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Este complejo ya esta lleno de paramedicos!");
+                }
+            } else {
+                if (!lleno_a(complejos.get(elegir_c.getSelectedRow()).nombre, complejos.get(elegir_c.getSelectedRow()).capacidad_a)) {
+
+                    JOptionPane.showMessageDialog(this, "Transferencia realizada con exito!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Este complejo ya esta lleno de ambulancias!");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila por favor");
+        }
+    }//GEN-LAST:event_bt_cambiarMouseClicked
+
+    private void agregar_cmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_cmMouseClicked
+        if (complejos.size() > 0) {
+            try {
+                grafo.addNode(complejos.get(mapear_c.getSelectedIndex()).nombre).setAttribute("ui.label", complejos.get(mapear_c.getSelectedIndex()).nombre);
+                JOptionPane.showMessageDialog(this, "Se ha agregado un Complejo Hospitalario al mapa");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Ese Complejo ya fue agregado anteriormente");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR! Seleccione un complejo por favor!");
+        }
+
+    }//GEN-LAST:event_agregar_cmMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        mostrar_grafo.setLocationRelativeTo(this);
+        mostrar_grafo.pack();
+        mostrar_grafo.setModal(true);
+        mostrar_grafo.setVisible(true);
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void agregar_dMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_dMouseClicked
+        if (!nombre_d.getText().equals("") && !direccion_d.getText().equals("")) {
+            domicilios.add(new domicilio(nombre_d.getText(), direccion_d.getText()));
+            domicilio_arista.addItem(nombre_d.getText());
+            grafo.addNode(nombre_d.getText());
+            nombre_d.setText("");
+            direccion_d.setText("");
+            JOptionPane.showMessageDialog(this, "Domicilio agregado exitosamente");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Hay espacios vacios! no se agrego el domicilio");
+        }
+
+    }//GEN-LAST:event_agregar_dMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        guardar();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void agregar_aristaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregar_aristaMouseClicked
+        if (complejos.size() > 0) {
+            if (domicilios.size() > 0) {
+                try {
+                    grafo.addEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre+"-"+domicilios.get(domicilio_arista.getSelectedIndex()).nombre , complejos.get(complejos_arista.getSelectedIndex()).nombre, domicilios.get(domicilio_arista.getSelectedIndex()).nombre);
+                    grafo.getEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre+"-"+domicilios.get(domicilio_arista.getSelectedIndex()).nombre).setAttribute("peso", distancia_arista.getValue());
+                    System.out.println(grafo.getEdge(complejos.get(complejos_arista.getSelectedIndex()).nombre+"-"+domicilios.get(domicilio_arista.getSelectedIndex()).nombre).getAttribute("peso").toString());
+                    complejos_arista.setSelectedIndex(0);
+                    domicilio_arista.setSelectedIndex(0);
+                    distancia_arista.setValue(1);
+                    JOptionPane.showMessageDialog(this, "Ruta creada exitosamente");
+                } catch(Exception ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR! Algo ocurrio intentalo de nuevo!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay Domicilio seleccionado");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay complejos seleccionados");
+        }
+    }//GEN-LAST:event_agregar_aristaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -479,21 +823,57 @@ public class Main extends javax.swing.JFrame {
         });
     }
 
+    public boolean lleno_a(String nombre, int cantidad) {
+        int cont = 0;
+        for (int i = 0; i < ambulancia.size(); i++) {
+            if (ambulancia.get(i).complejo.equals(nombre)) {
+                cont++;
+                if (cont == cantidad) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean lleno_p(String nombre, int cantidad) {
+        int cont = 0;
+        for (int i = 0; i < paramedico.size(); i++) {
+            if (paramedico.get(i).complejo.equals(nombre)) {
+                cont++;
+                if (cont == cantidad) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar_a;
+    private javax.swing.JButton agregar_arista;
     private javax.swing.JButton agregar_c;
+    private javax.swing.JButton agregar_cm;
+    private javax.swing.JButton agregar_d;
     private javax.swing.JButton agregar_p;
+    private javax.swing.JButton bt_cambiar;
     private javax.swing.JSpinner c_ambulancias;
     private javax.swing.JSpinner c_paramedicos;
     private javax.swing.JComboBox complejo_a;
     private javax.swing.JComboBox complejo_p;
+    private javax.swing.JComboBox complejos_arista;
     private javax.swing.JTextArea direccion_complejo;
+    private javax.swing.JTextArea direccion_d;
+    private javax.swing.JSpinner distancia_arista;
+    private javax.swing.JComboBox domicilio_arista;
     private javax.swing.JSpinner edad_p;
+    private javax.swing.JTable elegir_c;
+    private javax.swing.JDialog elegir_complejo;
     private javax.swing.JButton eliminar_a;
     private javax.swing.JButton eliminar_c;
     private javax.swing.JButton eliminar_p;
     private javax.swing.JComboBox emergencias_complejo;
     private javax.swing.JTextField id_p;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -501,6 +881,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -517,8 +901,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JComboBox mapear_c;
+    private javax.swing.JDialog mostrar_grafo;
     private javax.swing.JTextField nombre_complejo;
+    private javax.swing.JTextField nombre_d;
     private javax.swing.JTextField nombre_p;
     private javax.swing.JTextField placa_a;
     private javax.swing.JComboBox ranking_p;

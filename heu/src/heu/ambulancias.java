@@ -1,8 +1,10 @@
 
 package heu;
 
+import java.io.Serializable;
 
-public class ambulancias {
+
+public class ambulancias implements Serializable{
     String placa,complejo;
     int año,max_km;
     

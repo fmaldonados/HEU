@@ -1,8 +1,10 @@
 
 package heu;
 
+import java.io.Serializable;
 
-public class complejo_h {
+
+public class complejo_h implements Serializable{
     String nombre,direccion;
     int capacidad_p,capacidad_a;
     char ranking; 
